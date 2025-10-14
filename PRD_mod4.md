@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD)
 
 ## Document Information
-- **Document Title:** Online PCR Course - QC/QA for molecular detection
+- **Document Title:** Online PCR Course - Module 4 - QC/QA for molecular detection
 - **Version:** 0.1
 - **Last Updated:** September 23, 2025
 - **Document Owner:** Robert ten Hove

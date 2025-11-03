@@ -11,8 +11,7 @@ By the end of this chapter, you will be able to:
 - Setup a technical control system for your assay, containing
   - Reference materials,
   - Proficiency testing
-  - Testing performance
-  - Testing of new reagent lots
+  - Instrument and Reagent Quality Monitoring
   - Standard Operation procedures
 - Recognize non-conformities and act upon these.
 

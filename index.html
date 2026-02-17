@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 4: Quality Control and Quality Assurance in CCHF Molecular Diagnostics</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- IMPORTANT: Load enhanced SCORM wrapper FIRST, before any other scripts -->
+    <script src="scorm-wrapper.js"></script>
+    
+    <!-- Chart.js for Levey-Jennings Plot -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    
+    <style>
+        /* Override sidebar and content area scrolling to scroll together */
+        .main-layout {
+            display: flex;
+            flex: 1;
+            min-height: auto;
+        }
+
+        .sidebar {
+            width: 280px;
+            background-color: var(--rh-light-gray);
+            border-right: 2px solid #ddd;
+            padding: 0;
+            overflow-y: visible;
+            position: sticky;
+            top: 0;
+            height: fit-content;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: visible;
+            background-color: var(--rh-white);
+        }
+
+        .course-container {
+            background-color: var(--rh-white);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            width: 100%;
+            overflow: visible;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: var(--rh-light-blue);
+            color: var(--rh-black);
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* SCORM Status Indicator */
+        .scorm-status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            z-index: 10000;
+            display: none;
+        }
+
+        .scorm-status.connected {
+            background: rgba(57, 135, 12, 0.9);
+            display: block;
+        }
+
+        .scorm-status.error {
+            background: rgba(231, 76, 60, 0.9);
+            display: block;
+        }
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+            .main-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SCORM Status Indicator -->
+    <div id="scormStatus" class="scorm-status"></div>
+
+    <div class="course-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Module 4: Quality Control and Quality Assurance</h1>
+            <p>QC/QA for CCHF Molecular Detection</p>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <nav class="sidebar-nav">
+                    <div class="chapter-item active" data-tab="introduction">
+                        <span class="chapter-title">Introduction</span>
+                    </div>
+                    <div class="chapter-item" data-tab="chapter1">
+                        <span class="chapter-title">Chapter 1: Quality Failures</span>
+                    </div>
+                    <div class="chapter-item" data-tab="chapter2">
+                        <span class="chapter-title">Chapter 2: Pre-Analytical Phase</span>
+                    </div>
+                    <div class="chapter-item" data-tab="chapter3">
+                        <span class="chapter-title">Chapter 3: Assay Controls</span>
+                    </div>
+                    <div class="chapter-item" data-tab="chapter4">
+                        <span class="chapter-title">Chapter 4: Trend Analysis</span>
+                    </div>
+                    <div class="chapter-item" data-tab="chapter5">
+                        <span class="chapter-title">Chapter 5: Proficiency Testing</span>
+                    </div>
+                    <div class="chapter-item" data-tab="chapter6">
+                        <span class="chapter-title">Chapter 6: Post-Analytical Phase</span>
+                    </div>
+                    <div class="chapter-item" data-tab="summary">
+                        <span class="chapter-title">Summary</span>
+                    </div>
+                </nav>
+                <div class="progress-container">
+                    <p>Course Progress</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="courseProgress"></div>
+                    </div>
+                    <p id="progressText">0%</p>
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="content-area">
+                <!-- Introduction Section -->
+                <section id="introduction" class="content-section active">
+                    <h2>Introduction</h2>
+                    <p>In the previous chapter we already discussed some controls and calibrators of the real-time PCR assay. In this chapter we will elaborate more on technical quality indicators of the assay, among others the validation of the test and continued control assessment, for example with proficiency testing.</p>
+                    
+                    <p>We will NOT discuss here the quality management aspects such as facilities, safety, assessments and so on.</p>
+                    
+                    <h3>Learning Objectives</h3>
+                    <p>By the end of this chapter, you will be able to:</p>
+                    <ul>
+                        <li>Setup a technical control system for your assay, containing
+                            <ul>
+                                <li>Use of correct assay controls</li>
+                                <li>Interpret trend analysis</li>
+                                <li>Use of correct reference materials</li>
+                                <li>Perform proficiency testing</li>
+                                <li>Know when reagent lots need to be tested</li>
+                                <li>Describe the main Standard Operation procedures</li>
+                            </ul>
+                        </li>
+                        <li>Recognize non-conformities and act upon these.</li>
+                    </ul>
+                    
+                    <p>Good luck and enjoy this chapter.</p>
+                </section>
+
+                <!-- Chapter 1: Quality Failures -->
+                <section id="chapter1" class="content-section">
+                    <h2>Chapter 1: When Quality Fails in CCHF Diagnosis</h2>
+                    <p class="case-study-note">(based on an actual case from Iran, adapted for this course)</p>
+                    
+                    <p>Dr. Ayşe Demir, an infectious disease physician at a regional hospital in eastern Turkey, received a critical call from her laboratory on a Friday afternoon. A 42-year-old livestock farmer had presented to the emergency department with high fever (39.5°C), severe headache, myalgia, and thrombocytopenia (platelet count: 45,000/µL). He reported removing multiple ticks from his body three days earlier while working with sheep.</p>
+                    
+                    <p>Given the endemic nature of CCHF in the region and the classic presentation, Dr. Demir immediately ordered CCHF real-time RT-PCR testing on the patient's serum sample. The laboratory used a commercial RT-PCR kit targeting the S-segment of the CCHFV genome. Within 6 hours, the result came back: POSITIVE for CCHF virus with a Ct value of 34.</p>
+                    
+                    <p>The patient was isolated and treated for CCHF, his family and healthcare workers were placed under surveillance, and public health authorities mobilized.</p>
+                    
+                    <p>However, the patient's rapid clinical recovery contradicted the typical CCHF course. Repeat CCHF PCR and serology were negative, while <em>Anaplasma phagocytophilum</em> PCR returned positive.</p>
+                    
+                    <p>Further investigation revealed a critical quality control failure: On the same day the farmer's sample was processed, the laboratory prepared high viral load CCHF-positive control sample (from a confirmed case with viral load &gt;10<sup>8</sup> copies/mL) in the same Laminar Flow Cabinet. Cross-contamination during manual extraction (high-load positive control processed before the patient) was the likely culprit—pipette and spatial workflow lapses had not been mitigated. Negative extraction controls had not been included that day.</p>
+                    
+                    <p>The outcome: The patient underwent unnecessary CCHF treatment and isolation. There was delayed diagnosis (and therapy) of his actual illness, unnecessary public health interventions, and considerable distress to all involved.</p>
+                    
+                    <p>The true diagnosis was human granulocytic anaplasmosis, a tick-borne infection with overlapping symptoms but completely different treatment requirements and prognosis.</p>
+                    
+                    <div class="quiz-section" id="quiz1">
+                        <h3>Multiple Choice Question 1</h3>
+                        <p><strong>Which of the circumstances explains the incorrect CCHF RT-PCR diagnosis in this case?</strong></p>
+                        <form id="quiz1-form">
+                            <div class="quiz-option">
+                                <label>
+                                    <input type="radio" name="quiz1" value="A">
+                                    <span>A) The positive predictive value of CCHF PCR is always low in mild clinical cases in endemic regions</span>
+                                </label>
+                            </div>
+                            <div class="quiz-option">
+                                <label>
+                                    <input type="radio" name="quiz1" value="B">
+                                    <span>B) Cross-reaction of Anaplasma DNA with the CCHF PCR probe due to tick-borne pathogen co-infections</span>
+                                </label>
+                            </div>
+                            <div class="quiz-option">
+                                <label>
+                                    <input type="radio" name="quiz1" value="C">
+                                    <span>C) Carryover contamination from a high-load positive control processed close to the patient's sample, combined with lapses in spatial and procedural workflow and absence of extraction controls</span>
+                                </label>
+                            </div>
+                            <div class="quiz-option">
+                                <label>
+                                    <input type="radio" name="quiz1" value="D">
+                                    <span>D) Primer mismatch due to local CCHF virus genetic diversity, resulting in a false positive signal</span>
+                                </label>
+                            </div>
+                            <div class="quiz-option">
+                                <label>
+                                    <input type="radio" name="quiz1" value="E">
+                                    <span>E) Hemolysis of the patient's blood sample led to non-specific PCR amplification</span>
+                                </label>
+                            </div>
+                            <button type="button" class="submit-quiz-btn" onclick="checkQuiz1()">Submit Answer</button>
+                        </form>
+                        <div id="quiz1-feedback" class="quiz-feedback" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="quiz-section" id="quiz2">
+                        <h3>Multiple Choice Question 2</h3>
+                        <p><strong>Which of the following procedural adjustments, based on the described incident details, would have helped prevent this quality control failure? (Select one or more.)</strong></p>
+                        <form id="quiz2-form">
+                            <div class="quiz-option">
+                                <label>
+                                    <input type="checkbox" name="quiz2" value="A">
+                                    <span>A) Mandate that extraction of positive control and high-risk clinical samples occurs last in the batch, after all (unknown) clinical samples.</span>
+                                </label>
+                            </div>
+                            <div class="quiz-option">
+                                <label>
+                                    <input type="checkbox" name="quiz2" value="B">
+                                    <span>B) Physically separate pre- and post-PCR work areas.</span>
+                                </label>
+                            </div>
+                            <div class="quiz-option">
+                                <label>
+                                    <input type="checkbox" name="quiz2" value="C">
+                                    <span>C) Include negative extraction controls in each run and review their results before authorizing patient results.</span>
+                                </label>
+                            </div>
+                            <div class="quiz-option">
+                                <label>
+                                    <input type="checkbox" name="quiz2" value="D">
+                                    <span>D) Use only serological assays to pre-screen samples before CCHF PCR.</span>
+                                </label>
+                            </div>
+                            <div class="quiz-option">
+                                <label>
+                                    <input type="checkbox" name="quiz2" value="E">
+                                    <span>E) Assign less experienced staff to process only negative controls, not clinical samples.</span>
+                                </label>
+                            </div>
+                            <button type="button" class="submit-quiz-btn" onclick="checkQuiz2()">Submit Answer</button>
+                        </form>
+                        <div id="quiz2-feedback" class="quiz-feedback" style="display: none;"></div>
+                    </div>
+                </section>
+
+                <!-- Chapter 2: Pre-Analytical Phase -->
+                <section id="chapter2" class="content-section">
+                    <h2>Chapter 2: The Pre-Analytical Phase</h2>
+                    
+                    <p>The first step of quality control happens before the main test begins, before the sample reaches our instruments. This is a critical step as studies have shown that the majority of laboratory errors occur here.</p>
+                    
+                    <h3>Proper Collection and Labeling</h3>
+                    
+                    <p><strong>Is the sample labeled?</strong> Preferably with at least two unique patient identifiers to make sure that we are testing the right person.</p>
+                    
+                    <p><strong>Did the sample arrive in the correct and undamaged container?</strong> For example, preservatives such as alcohol, heparin and formaldehyde inhibit the PCR.</p>
+                    
+                    <p><strong>Are the laboratory and technicians ready to process the samples?</strong></p>
+                    
+                    <p>Once the samples have been accepted for the analysis, the process of analytical testing can begin.</p>
+                    
+                    <div class="info-box">
+                        <strong>Note:</strong> Examples of improper containers include blood bags or envelopes with no name on them.
+                    </div>
+                </section>
+
+                <!-- Chapter 3: Assay Controls -->
+                <section id="chapter3" class="content-section">
+                    <h2>Chapter 3: Assay Controls</h2>
+                    
+                    <p>Federal regulations require the use of controls, and they are very specific for molecular amplification tests.</p>
+                    
+                    <p>Control procedures must be established to monitor the test system over time and detect immediate errors due to factors like test system failure, poor environmental conditions, or operator error.</p>
+                    
+                    <h3>Essential Components of the Real-Time PCR Control System:</h3>
+                    <ul>
+                        <li>Internal control</li>
+                        <li>Positive control</li>
+                        <li>Negative control</li>
+                        <li>Blank control</li>
+                        <li>Quantitative control</li>
+                    </ul>
+                    
+                    <h4>Internal Control</h4>
+                    <p><strong>Internal control</strong> is a nucleic acid sequence that is amplified alongside the target nucleic acid in the same reaction. It is differentiated from the target amplicon using a sequence-specific probe tagged with a reporting dye that fluoresces at a different wavelength. The IC provides intelligence to call a test "indeterminate" rather than "negative" if it fails to amplify, indicating chemical system inhibition. Amplification of an IC (either endogenous or spiked) is recommended to ensure inhibitors are not interfering with the assay.</p>
+                    
+                    <div class="info-box">
+                        <strong>Important:</strong> Morphology of internal control should be similar to the target. Do not use viruses as internal control for assays designed to detect bacterial spores. If the internal control worked, it doesn't necessarily mean the extraction was successful for all sample types—it takes a lot more to break up spores than viral particles.
+                    </div>
+                    
+                    <h4>Positive Control</h4>
+                    <p><strong>Positive control:</strong> Used to demonstrate the ability of the test to detect a target when it is present (analytical sensitivity). It should contain a clinically relevant amount of analyte. Both high and low positive controls (near the limit of detection) should be used.</p>
+                    
+                    <h4>Negative Control</h4>
+                    <p><strong>Negative control:</strong> A known negative clinical specimen run alongside the unknown sample, but with internal control.</p>
+                    
+                    <h4>Blank Control</h4>
+                    <p><strong>Blank control:</strong> The blank should contain the complete reaction mixture <em>except</em> nucleic acids (adding used elution buffer). Its use is mandatory to monitor for carry-over contamination (amplification contamination).</p>
+                    
+                    <div class="intermezzo">
+                        <h3>INTERMEZZO: UNG-Digestion PCR</h3>
+                        <p>"Uracil-DNA glycosylase (UDG) or UNG-digestion PCR." In this approach, deoxyuridine triphosphate (dUTP) is incorporated into PCR reactions in place of deoxythymidine triphosphate (dTTP), creating amplicons that contain uracil instead of thymine. Before performing the PCR, the reaction mixture is treated with uracil-N-glycosylase (UNG or UDG), which digests or removes any uracil-containing DNA. This step eliminates carryover contamination from previous PCRs, as only newly synthesized DNA (without uracil) will be amplified in the reaction. This technique is often referred to as "UNG-digestion" or "carryover prevention PCR" or simply "dUTP/UNG system." It is used for digesting potential previous reaction products to prevent contamination, making it highly valuable for sensitive applications.</p>
+                    </div>
+                    
+                    <h4>Quantitative Control</h4>
+                    <p><strong>Quantitative control:</strong> Quantitative procedures must include <strong>two control materials of different concentrations</strong> (calibrators) in each run.</p>
+                </section>
+
+                <!-- Chapter 4: Trend Analysis -->
+                <section id="chapter4" class="content-section">
+                    <h2>Chapter 4: Trend Analysis</h2>
+                    
+                    <p>If the sample contains substances that inhibit the PCR, it can be detected with the Internal Control (IC). When we purify nucleic acids, we remove proteins and other substances that could interfere with the test. Any left-over inhibitors will interfere with the IC.</p>
+                    
+                    <p>Think of the IC as a "buddy" that goes through the entire extraction and amplification process alongside the patient's own nucleic acids. If the patient's sample is truly negative for the target we're looking for, the IC <strong>must</strong> still amplify successfully. If the IC "buddy" doesn't show up at the end of the test, or shows up late, it tells us that something went wrong along the way—either the extraction failed or something in the sample inhibited the PCR reaction.</p>
+                    
+                    <p>How do you know an IC-buddy in one of the patient samples 'is late'? For this, we can compare the IC-buddy in our negative extraction control (no patient material added) with our IC-buddies in the clinical samples.</p>
+                    
+                    <p>The same applies for our positive controls. Keeping track of Ct-values from positive controls can help you to analyse the root cause of false positive/negative outcomes. How? We will explain this next.</p>
+                    
+                    <h3>Routine Trend Monitoring</h3>
+                    
+                    <p>One specific method utilized in laboratories for monitoring Ct values is the implementation of <strong>Levey-Jennings plots,</strong> and applying <strong>Westgard rules</strong> on the plots.</p>
+                    
+                    <div class="info-box">
+                        <p><strong>Key concepts for Levey-Jennings charts:</strong></p>
+                        <ul>
+                            <li>Mean Value</li>
+                            <li>Standard Deviation (SD)</li>
+                            <li>Coefficient of Variation (%CV)</li>
+                            <li>Westgard rules</li>
+                        </ul>
+                        <p><strong>Learn more:</strong> <a href="https://www.spcforexcel.com/knowledge/measurement-systems-analysis-gage-rr/levey-jennings-charts/" target="_blank">Levey-Jennings Charts Guide</a></p>
+                    </div>
+                    
+                    <h3>Interactive Levey-Jennings Plot</h3>
+                    
+                    <p>Below is an interactive Levey-Jennings chart showing Internal Control (IC) Ct values over time. The chart displays control limits at ±1 SD (warning zone) and ±2 SD (failure zone).</p>
+                    
+                    <div class="levey-jennings-container">
+                        <div class="chart-controls">
+                            <label>
+                                <input type="checkbox" id="showControlLimits" checked>
+                                Show Control Limits
+                            </label>
+                            <label>
+                                <input type="checkbox" id="highlightFailures" checked>
+                                Highlight Failures
+                            </label>
+                            <label>
+                                <input type="checkbox" id="showBatchChanges" checked>
+                                Show Batch Changes
+                            </label>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="levyJenningsChart"></canvas>
+                        </div>
+                        <div class="chart-info-panel" id="chartInfoPanel">
+                            <h4>Run Information</h4>
+                            <p class="info-instruction">Hover over data points to view details</p>
+                            <div id="runDetails" class="run-details">
+                                <div class="detail-row"><strong>Run:</strong> <span id="runNumber">-</span></div>
+                                <div class="detail-row"><strong>Date:</strong> <span id="runDate">-</span></div>
+                                <div class="detail-row"><strong>Ct Value:</strong> <span id="runCt">-</span></div>
+                                <div class="detail-row"><strong>Status:</strong> <span id="runStatus" class="status-badge">-</span></div>
+                                <div class="detail-row"><strong>SD:</strong> <span id="runSD">-</span></div>
+                                <div class="detail-row"><strong>Batch:</strong> <span id="runBatch">-</span></div>
+                                <div class="detail-row detail-note"><strong>Note:</strong> <span id="runNote">-</span></div>
+                            </div>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="legend-item"><span class="legend-dot passed"></span> Passed (within ±1 SD)</div>
+                            <div class="legend-item"><span class="legend-dot warning"></span> Warning (±1 to ±2 SD)</div>
+                            <div class="legend-item"><span class="legend-dot failed"></span> Failed (outside ±2 SD)</div>
+                        </div>
+                    </div>
+                    
+                    <h3>Testing of New Reagent Lots</h3>
+                    
+                    <p>When we receive a new batch (lot) of reagents, we test it side-by-side with the old lot to confirm it performs identically before we put it into clinical use.</p>
+                </section>
+
+                <!-- Chapter 5: Proficiency Testing -->
+                <section id="chapter5" class="content-section">
+                    <h2>Chapter 5: Proficiency Testing</h2>
+                    
+                    <h3>Proficiency Testing</h3>
+                    <p><strong>External Quality Surveillance (Inter-Laboratory Comparison)</strong></p>
+                    
+                    <p><strong>External Quality Control (EQC):</strong> EQC samples are periodically run alongside routine assays to verify the integrity of the reagent and the successful extraction of nucleic acid, often assessed <strong>based on the Ct value</strong> compared to an endogenous control.</p>
+                    
+                    <p>Several times a year (and at a minimum, twice per year), an external, independent agency sends us a panel of "unknown" samples to test. We don't know the expected results. We process these samples exactly like patient specimens and send our results back. This process, known as proficiency testing, is a critical, objective way to verify that our entire testing system—our people, our methods, and our machines—is producing accurate results that are comparable to those from other top labs.</p>
+                    
+                    <h3>Commercial Kits versus In-House Assays</h3>
+                    
+                    <p><strong>Commercial kits require Verification:</strong> The purpose is to confirm that the test performs as expected according to the manufacturer's established performance characteristics, in the laboratory's specific environment.</p>
+                    
+                    <p><strong>In-house assays require Validation:</strong> Here the purpose is to establish the test's performance characteristics from scratch, as no performance data is supplied by a manufacturer. Performance characteristics that need to be tested are Accuracy, Precision, Analytical sensitivity (lower limit of target detection), Reportable range of test results, reproducibility and analytic specificity.</p>
+                    
+                    <div class="info-box">
+                        <strong>Note:</strong> There is also a midway, by setting up an assay that is described in a scientific article. In consultation with the quality manager a verification/validation plan can be made which meets national quality requirements.
+                    </div>
+                    
+                    <h3>Where to Find Reference Material?</h3>
+                    
+                    <p>Use preferably deactivated virus instead of clean Nucleic Acid constructs such as plasmids or cDNA. A positive control has to simulate NA extraction from real-virus particles. For example if during extraction proteinase-K was not added, this would be visible in the positive virus control, in contrast when using clean cDNA.</p>
+                    
+                    <div class="info-box">
+                        <strong>Important Safety Note:</strong> Handling any infectious CCHF material requires BSL-3/4 precautions; most suppliers only offer non-infectious, synthetic, or recombinant standards suitable for validation without special containment.
+                    </div>
+                    
+                    <p><strong>Sources for reference materials:</strong></p>
+                    <ul>
+                        <li>Commercial kits as described above contain well defined positive controls.</li>
+                        <li>Ask other laboratories, reference labs, together with their results. Check which platform and extraction method they are using.</li>
+                        <li>Use positive samples from a proficiency testing panel.</li>
+                    </ul>
+                </section>
+
+                <!-- Chapter 6: Post-Analytical Phase -->
+                <section id="chapter6" class="content-section">
+                    <h2>Chapter 6: The Post-Analytical Phase</h2>
+                    
+                    <h3>Interpreting the Run</h3>
+                    
+                    <p>Results must be reported accurate, clear, and provide the necessary context for the ordering physician.</p>
+                    
+                    <h4>Qualitative Reports</h4>
+                    <p><strong>Qualitative Reports:</strong> These provide a simple "Positive/Detected" or "Negative/Not Detected" answer. A Ct-value often doesn't mean much to a physician.</p>
+                    
+                    <p>To help physicians interpret a negative result, the report must always include the test's <strong>Limit of Detection (LOD)</strong>—the smallest amount of the target the test can reliably detect.</p>
+                    
+                    <h4>Quantitative Reports</h4>
+                    <p><strong>Quantitative Reports:</strong> These provide a numerical value, such as a viral load (e.g., 50,000 copies/mL). These reports must state the test's <strong>analytic measuring range</strong>. A result can be reported as:</p>
+                    
+                    <ul>
+                        <li>A specific number (if within the range) with the actual quantity along with the unit (for example copies per ml)</li>
+                        <li>"Above limit of quantification/measuring range"</li>
+                        <li>"Below the limit of quantification, not detected, not accurately quantifiable, or whatever is applicable"</li>
+                    </ul>
+                    
+                    <div class="info-box">
+                        <strong>Important Clinical Note:</strong> Including an <strong>interpretive guideline</strong> helps the physician in patient diagnosis and subsequent treatment. Physicians might associate a low Ct value such as Ct=23.1 as a light infection, while actually the outcome of infection has an inverse correlation with the Ct value. A lower Ct value signifies a higher viral load and thus a worse prognosis. The quantitative detection of a viral load of ≥1 x 10<sup>9</sup> copies/ml is a specific indicator of poor prognosis.
+                    </div>
+                    
+                    <p>The laboratory can also recommend additional serological testing if two weeks have passed since the onset of symptoms.</p>
+                </section>
+
+                <!-- Summary -->
+                <section id="summary" class="content-section">
+                    <h2>Module Summary</h2>
+                    <p>Congratulations on completing Module 4: Quality Control and Quality Assurance!</p>
+                    
+                    <!-- Summary content will be added here -->
+                    <p><em>Summary content to be developed...</em></p>
+                </section>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 RIVM - National Institute for Public Health and the Environment</p>
+            <p>Module 4: Quality Control and Quality Assurance in CCHF Molecular Diagnostics</p>
+        </footer>
+    </div>
+
+    <!-- Load main JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

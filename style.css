@@ -2195,3 +2195,49 @@ body {
         margin: 10px 0;
     }
 }
+/* Continue Button Styles */
+.continue-section {
+    margin-top: 40px;
+    padding: 30px 0;
+    border-top: 2px solid var(--rh-light-gray);
+    text-align: center;
+}
+
+.continue-btn {
+    background: linear-gradient(135deg, var(--rh-green) 0%, var(--rh-dark-blue) 100%);
+    color: var(--rh-white);
+    border: none;
+    padding: 15px 50px;
+    font-size: 1.1em;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.continue-btn:hover {
+    background: linear-gradient(135deg, var(--rh-dark-blue) 0%, var(--rh-green) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.continue-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Image Container */
+.image-container {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

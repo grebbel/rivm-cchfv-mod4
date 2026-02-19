@@ -104,6 +104,159 @@
                 height: auto;
             }
         }
+
+        /* Score Thermometer Styles */
+        .score-thermometer {
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            border-top: 3px solid var(--rh-orange);
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .thermometer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--rh-orange);
+        }
+
+        .thermometer-title {
+            font-weight: 600;
+            font-size: 1.1em;
+            color: var(--rh-dark-blue);
+        }
+
+        .thermometer-temp {
+            font-weight: 700;
+            font-size: 1em;
+            color: var(--rh-orange);
+        }
+
+        .thermometer-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            height: 200px;
+        }
+
+        .thermometer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 120px;
+        }
+
+        .thermometer-tube {
+            flex: 1;
+            width: 30px;
+            background: linear-gradient(to right, #e0e0e0 0%, #f9f9f9 50%, #e0e0e0 100%);
+            border: 2px solid #999;
+            border-radius: 15px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .mercury-fill {
+            width: 70%;
+            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+            border-radius: 0 0 15px 15px;
+            transition: height 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .thermometer-bulb {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #999;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #e8e8e8, #999);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        .mercury-bulb {
+            width: 35px;
+            height: 35px;
+            background: radial-gradient(circle at 35% 35%, #c41e3a, #8b0000);
+            border-radius: 50%;
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .thermometer-marks {
+            position: absolute;
+            right: -45px;
+            top: 0;
+            height: 100%;
+            width: 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 5px 0;
+        }
+
+        .mark {
+            font-size: 0.75em;
+            font-weight: 600;
+            color: #333;
+            text-align: left;
+            padding-left: 5px;
+        }
+
+        .thermometer-status {
+            text-align: center;
+            padding: 15px 0;
+            border-top: 2px solid var(--rh-orange);
+            margin-top: 15px;
+        }
+
+        .status-message {
+            font-size: 0.95em;
+            color: var(--rh-dark-blue);
+            font-weight: 500;
+            margin-bottom: 8px;
+            min-height: 20px;
+        }
+
+        .percentage-display {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--rh-orange);
+        }
+
+        .score-reset-section {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .reset-score-btn {
+            background-color: var(--rh-light-gray);
+            border: 2px solid var(--rh-dark-blue);
+            color: var(--rh-dark-blue);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+
+        .reset-score-btn:hover {
+            background-color: var(--rh-dark-blue);
+            color: var(--rh-white);
+        }
+
+        .reset-score-btn:active {
+            transform: scale(0.98);
+        }
     </style>
 </head>
 <body>
@@ -147,12 +300,44 @@
                         <span class="chapter-title">Summary</span>
                     </div>
                 </nav>
-                <div class="progress-container">
-                    <p>Course Progress</p>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="courseProgress"></div>
+
+                <!-- Score Thermometer -->
+                <div class="score-thermometer">
+                    <div class="thermometer-header">
+                        <span class="thermometer-title">🎯 Course Score</span>
+                        <div class="thermometer-temp">
+                            <span class="current-score">0</span>/<span class="max-score">100</span>
+                        </div>
                     </div>
-                    <p id="progressText">0%</p>
+                    
+                    <div class="thermometer-container">
+                        <div class="thermometer">
+                            <div class="thermometer-bulb">
+                                <div class="mercury-bulb" id="mercuryBulb"></div>
+                            </div>
+                            <div class="thermometer-tube">
+                                <div class="mercury-fill" id="mercuryFill"></div>
+                                <div class="thermometer-marks">
+                                    <div class="mark" data-temp="100%">100</div>
+                                    <div class="mark" data-temp="75%">75</div>
+                                    <div class="mark" data-temp="50%">50</div>
+                                    <div class="mark" data-temp="25%">25</div>
+                                    <div class="mark" data-temp="0%">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="thermometer-status">
+                        <div class="status-message" id="statusMessage">🌱 Just getting started!</div>
+                        <div class="percentage-display" id="percentageDisplay">0%</div>
+                    </div>
+
+                    <div class="score-reset-section">
+                        <button class="reset-score-btn" id="resetScoreBtn" title="Reset all progress and scores to zero">
+                            🔄 Reset Progress
+                        </button>
+                    </div>
                 </div>
             </aside>
 
@@ -280,6 +465,10 @@
                         </form>
                         <div id="quiz2-feedback" class="quiz-feedback" style="display: none;"></div>
                     </div>
+                    
+                    <div class="continue-section">
+                        <button class="continue-btn" data-next="chapter2">CONTINUE</button>
+                    </div>
                 </section>
 
                 <!-- Chapter 2: Pre-Analytical Phase -->
@@ -292,7 +481,7 @@
                     
                     <p><strong>Is the sample labeled?</strong> Preferably with at least two unique patient identifiers to make sure that we are testing the right person.</p>
                     
-                    <p><strong>Did the sample arrive in the correct and undamaged container?</strong> For example, preservatives such as alcohol, heparin and formaldehyde inhibit the PCR.</p>
+                    <p><strong>Did the sample arrive in the correct and undamaged tube? Are the samples safe from contaminations?</strong> For example, preservatives such as alcohol, heparin and formaldehyde inhibit the PCR.</p>
                     
                     <p><strong>Are the laboratory and technicians ready to process the samples?</strong></p>
                     
@@ -300,6 +489,14 @@
                     
                     <div class="info-box">
                         <strong>Note:</strong> Examples of improper containers include blood bags or envelopes with no name on them.
+                    </div>
+                    
+                    <div class="image-container">
+                        <img src="images/01_RIVM_59-1920.JPG" alt="Laboratory sample handling" style="max-width: 600px; width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    </div>
+                    
+                    <div class="continue-section">
+                        <button class="continue-btn" data-next="chapter3">CONTINUE</button>
                     </div>
                 </section>
 
@@ -320,20 +517,16 @@
                         <li>Quantitative control</li>
                     </ul>
                     
-                    <h4>Internal Control</h4>
                     <p><strong>Internal control</strong> is a nucleic acid sequence that is amplified alongside the target nucleic acid in the same reaction. It is differentiated from the target amplicon using a sequence-specific probe tagged with a reporting dye that fluoresces at a different wavelength. The IC provides intelligence to call a test "indeterminate" rather than "negative" if it fails to amplify, indicating chemical system inhibition. Amplification of an IC (either endogenous or spiked) is recommended to ensure inhibitors are not interfering with the assay.</p>
                     
                     <div class="info-box">
                         <strong>Important:</strong> Morphology of internal control should be similar to the target. Do not use viruses as internal control for assays designed to detect bacterial spores. If the internal control worked, it doesn't necessarily mean the extraction was successful for all sample types—it takes a lot more to break up spores than viral particles.
                     </div>
                     
-                    <h4>Positive Control</h4>
                     <p><strong>Positive control:</strong> Used to demonstrate the ability of the test to detect a target when it is present (analytical sensitivity). It should contain a clinically relevant amount of analyte. Both high and low positive controls (near the limit of detection) should be used.</p>
                     
-                    <h4>Negative Control</h4>
                     <p><strong>Negative control:</strong> A known negative clinical specimen run alongside the unknown sample, but with internal control.</p>
                     
-                    <h4>Blank Control</h4>
                     <p><strong>Blank control:</strong> The blank should contain the complete reaction mixture <em>except</em> nucleic acids (adding used elution buffer). Its use is mandatory to monitor for carry-over contamination (amplification contamination).</p>
                     
                     <div class="intermezzo">
@@ -341,8 +534,11 @@
                         <p>"Uracil-DNA glycosylase (UDG) or UNG-digestion PCR." In this approach, deoxyuridine triphosphate (dUTP) is incorporated into PCR reactions in place of deoxythymidine triphosphate (dTTP), creating amplicons that contain uracil instead of thymine. Before performing the PCR, the reaction mixture is treated with uracil-N-glycosylase (UNG or UDG), which digests or removes any uracil-containing DNA. This step eliminates carryover contamination from previous PCRs, as only newly synthesized DNA (without uracil) will be amplified in the reaction. This technique is often referred to as "UNG-digestion" or "carryover prevention PCR" or simply "dUTP/UNG system." It is used for digesting potential previous reaction products to prevent contamination, making it highly valuable for sensitive applications.</p>
                     </div>
                     
-                    <h4>Quantitative Control</h4>
                     <p><strong>Quantitative control:</strong> Quantitative procedures must include <strong>two control materials of different concentrations</strong> (calibrators) in each run.</p>
+                    
+                    <div class="continue-section">
+                        <button class="continue-btn" data-next="chapter4">CONTINUE</button>
+                    </div>
                 </section>
 
                 <!-- Chapter 4: Trend Analysis -->
@@ -417,6 +613,43 @@
                     <h3>Testing of New Reagent Lots</h3>
                     
                     <p>When we receive a new batch (lot) of reagents, we test it side-by-side with the old lot to confirm it performs identically before we put it into clinical use.</p>
+                    
+                    <!-- Quiz 3: Levey-Jennings Quiz -->
+                    <div class="quiz-container">
+                        <h4>Quiz: Levey-Jennings Control Replacement</h4>
+                        <p><strong>Question:</strong> Look in the Levey-Jennings plot above. After run number 44, the control is replaced. What could be the reason for this decision? Tick the correct answer(s).</p>
+                        
+                        <form id="quiz3-form">
+                            <div class="quiz-option">
+                                <label>
+                                    <input type="checkbox" name="quiz3" value="2"> A single data point fell slightly outside the ±2SD range.
+                                </label>
+                            </div>
+                            <div class="quiz-option">
+                                <label>
+                                    <input type="checkbox" name="quiz3" value="3"> The control has been used for over two months.
+                                </label>
+                            </div>
+                            <div class="quiz-option">
+                                <label>
+                                    <input type="checkbox" name="quiz3" value="1"> A trend of declining quality in sequential order.
+                                </label>
+                            </div>
+                            <div class="quiz-option">
+                                <label>
+                                    <input type="checkbox" name="quiz3" value="5"> The laboratory decided to switch to a different brand of positive control.
+                                </label>
+                            </div>
+                            <div class="quiz-option">
+                                <label>
+                                    <input type="checkbox" name="quiz3" value="4"> Consecutive samples deviating too much from the mean.
+                                </label>
+                            </div>
+                            <button type="button" class="submit-quiz-btn" onclick="checkQuiz3()">Submit Answer</button>
+                        </form>
+                        
+                        <div id="quiz3-feedback" class="quiz-feedback" style="display: none;"></div>
+                    </div>
                 </section>
 
                 <!-- Chapter 5: Proficiency Testing -->

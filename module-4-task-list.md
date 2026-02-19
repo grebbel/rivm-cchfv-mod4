@@ -246,12 +246,82 @@
   - If prompt is not clear, please pause and ask for clarification.
   - **Completed:** Added Chapter 6 navigation link in sidebar, created complete Post-Analytical Phase content including Interpreting the Run, Qualitative Reports (LOD), Quantitative Reports (measuring range), and clinical interpretation guidelines with inverse Ct-value correlation
 
-- [ ] **CONT-013** Summary
-  - Dependencies: Mod_4_Quality controlv3_1.md
-  - Add content
+- [X] **CONT-012** Chapter 6: The Post-Analytical Phase 
+  - Dependencies: Mod_4_Quality controlv3_1.md 
+  - Add to module 4 chapter 4, after paragraph "Testing of New Reagent Lots", the Quiz question: 'Reagent lots quiz question', lines 174-199. 
+  - Look in the Levey-Jennings plot above. After run number 44, the control is replaced. What could be the reason for this decision? Tick the correct answer(s).'
+  - add the answers, but in random order. 
+  - More than one answers can be ticked. 
+  - The (in)correct aswers are listed following 'Results and argumentation:' 
+  - The user can submit their answers only two times. 
+  - After clicking the sumbit answer button the first time, the user received only a score from the total. 
+  - After the first try, the user is asked: Try again?. 
+  - After submitting the answers the second time, the user received the score together with the explanation of the answers. 
+  - **Completed:** Added Quiz 3 to Chapter 4 (Testing of New Reagent Lots section) with 5 randomized options. Quiz tracks 2 submissions: first shows only score with "Try Again" option, second shows full explanation with correct/incorrect answers and scoring breakdown (±15 points for correct, -10 for incorrect answers). 
 
-- [ ] **CONT-013** Summary
-  - Dependencies: module_4_quality.md
+- [X] **CONT-014** Tweaking quiz question in CONT-012. 
+  - after submitting the answers the first time write the score of the maximum score
+  - If the users already got the maximum score, then the user receives the explanation of the results. If the user got less then the maximum score, the user received the text:   
+  - 📊 First Attempt Score: 20 points from the maximum of 30 points. 
+  - Instead of 'Try again to see the detailed explanation.' write 'you can try again one more time.' 
+  - **Completed:** Updated checkQuiz3 function to show "X points from the maximum of 30 points" on first attempt. If perfect score (30 points) is achieved, full explanation is shown immediately without requiring second attempt. If score is less than maximum, shows message "📊 First Attempt Score: X points from the maximum of 30 points. You can try again one more time." All feedback messages now include "from the maximum of 30 points" for clarity. 
+
+
+- [X] **CONT-015** Adding the score thermometer. 
+  - In the left column, under the chapters-list, add a score thermometer. The same as used in the other modules. 
+  - Do you have access to the other modules we prepared earlier? 
+  - **Completed:** Added interactive score thermometer to sidebar in Module 4 with the following features:
+    - Visual mercury thermometer with animated fill based on quiz scores (0-100 points)
+    - Real-time score display showing current/maximum points
+    - Progressive status messages based on score percentage (e.g., "Just getting started!", "Making progress!", "Perfect score!")
+    - Color-changing mercury bulb (red → orange → green) indicating performance level
+    - Reset Progress button with confirmation dialog
+    - Integrated with all quiz scoring functions (Quiz 1: 20 pts, Quiz 2: variable pts, Quiz 3: 30 pts max)
+    - CSS styling with thermometer tube, bulb, and marks display
+    - Responsive design for mobile and desktop views 
+
+
+- [X] **CONT-016** Chapter 1 Continue button
+  - At the end of Chapter 1, add Continue button. 
+  - User will go to chapter 2 after clicking the button.
+  - **Completed:** Added continue button at end of Chapter 1 that navigates to Chapter 2  
+
+- [X] **CONT-017** Chapter 2 edit text
+  - Replace Sentence "Did the sample arrive in the correct and undamaged container?" by: "Did the sample arrive in the correct and undamed tube? Are the samples safe from contaminations?" 
+  - After the "Note". add image
+  - **Completed:** Updated text to "Did the sample arrive in the correct and undamaged tube? Are the samples safe from contaminations?"
+
+- [X] **CONT-018** Chapter 2 add image
+  - At image at the end. Image path: images/01_RIVM_59-1920.JPG
+  - **Completed:** Added laboratory sample handling image at end of Chapter 2 with proper styling 
+
+- [X] **CONT-019** Chapter 2 Continue button
+  - At the end of Chapter 2, add Continue button. 
+  - User will go to chapter 3 after clicking the button.
+  - **Completed:** Added continue button at end of Chapter 2 that navigates to Chapter 3  
+
+- [X] **CONT-020** Chapter 3 Continue button
+  - At the end of Chapter 3, add Continue button. 
+  - User will go to chapter 4 after clicking the button.
+  - **Completed:** Added continue button at end of Chapter 3 that navigates to Chapter 4  
+
+- [X] **CONT-021** Chapter 3 remove headers
+- Dependencies: index.html 
+  - In Chapter 3, Remove the following headers: 
+    - line 508 <h4>Internal Control</h4>
+    - line 515 <h4>Positive Control</h4>
+    - line 518 <h4>Negative Control</h4>
+    - line 521 <h4>Blank Control</h4> 
+    - line 529 <h4>Quantitative Control</h4>
+  - **Completed:** Removed all 5 control headers (Internal, Positive, Negative, Blank, Quantitative) from Chapter 3 while preserving the content paragraphs
+
+
+
+- [ ] **CONT-030** Summary
+  - Dependencies: Mod_4_Quality controlv3_1.md 
+  - Add conten
+
+
 
 
 ### Assessment Development

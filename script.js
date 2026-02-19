@@ -6,8 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
         totalChapters: 8, // Introduction + 6 chapters + Summary
         quizzesCompleted: { 
             quiz1: false,
-            quiz2: false
+            quiz2: false,
+            quiz3: false
         },
+        totalScore: 0, // Track total earned score
+        maxScore: 100, // Maximum possible score (20+20+20+40 from 4 quizzes)
         startTime: new Date(),
         interactions: [],
         bookmarks: [],
@@ -67,6 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
             progressText.textContent = Math.round(progressPercent) + '%';
         }
 
+        // Update thermometer
+        updateThermometer();
+
         // Update SCORM progress
         if (window.scormAPI && window.scormAPI.isScormAvailable()) {
             window.scormSetProgress(progressPercent);
@@ -78,6 +84,80 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+
+    // Update Thermometer Display
+    function updateThermometer() {
+        const mercuryFill = document.getElementById('mercuryFill');
+        const currentScoreDisplay = document.querySelector('.current-score');
+        const percentageDisplay = document.getElementById('percentageDisplay');
+        const statusMessage = document.getElementById('statusMessage');
+        const mercuryBulb = document.getElementById('mercuryBulb');
+        
+        if (!mercuryFill) return; // Thermometer not on this page
+        
+        const scorePercent = (courseProgress.totalScore / courseProgress.maxScore) * 100;
+        
+        // Update mercury fill height (0 to 100%)
+        mercuryFill.style.height = Math.max(0, Math.min(100, scorePercent)) + '%';
+        
+        // Update score display
+        if (currentScoreDisplay) {
+            currentScoreDisplay.textContent = courseProgress.totalScore;
+        }
+        
+        // Update percentage display
+        if (percentageDisplay) {
+            percentageDisplay.textContent = Math.round(scorePercent) + '%';
+        }
+        
+        // Update status message based on score
+        if (statusMessage) {
+            if (scorePercent === 0) {
+                statusMessage.textContent = '🌱 Just getting started!';
+            } else if (scorePercent < 25) {
+                statusMessage.textContent = '📈 Keep going!';
+            } else if (scorePercent < 50) {
+                statusMessage.textContent = '🔥 Making progress!';
+            } else if (scorePercent < 75) {
+                statusMessage.textContent = '⭐ Almost there!';
+            } else if (scorePercent < 100) {
+                statusMessage.textContent = '🎯 Nearly perfect!';
+            } else {
+                statusMessage.textContent = '🏆 Perfect score!';
+            }
+        }
+        
+        // Update mercury bulb color based on score
+        if (mercuryBulb) {
+            if (scorePercent <= 33) {
+                mercuryBulb.style.background = 'radial-gradient(circle at 35% 35%, #ff6b6b, #c92a2a)';
+            } else if (scorePercent <= 66) {
+                mercuryBulb.style.background = 'radial-gradient(circle at 35% 35%, #ffa94d, #e8590c)';
+            } else {
+                mercuryBulb.style.background = 'radial-gradient(circle at 35% 35%, #51cf66, #2b8a3e)';
+            }
+        }
+    }
+
+    // Function to add points to the score
+    window.addScorePoints = function(points) {
+        courseProgress.totalScore += points;
+        // Ensure total doesn't exceed max
+        courseProgress.totalScore = Math.min(courseProgress.totalScore, courseProgress.maxScore);
+        updateThermometer();
+    };
+
+    // Reset score function
+    window.resetScore = function() {
+        if (confirm('Are you sure you want to reset all progress and scores to zero?')) {
+            courseProgress.totalScore = 0;
+            courseProgress.chaptersVisited.clear();
+            courseProgress.quizzesCompleted = { quiz1: false, quiz2: false, quiz3: false };
+            updateCourseProgress();
+            updateThermometer();
+            alert('Progress reset complete!');
+        }
+    };
 
     // Quiz functionality (placeholder for future implementation)
     function initializeQuizzes() {
@@ -117,6 +197,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Update quiz completion status
             courseProgress.quizzesCompleted.quiz1 = true;
+            
+            // Update thermometer score
+            addScorePoints(20);
             
             // Award points via SCORM
             if (window.scormAPI && window.scormAPI.isScormAvailable()) {
@@ -199,12 +282,166 @@ document.addEventListener('DOMContentLoaded', () => {
             feedback.innerHTML = '❌ <strong>Incorrect.</strong> You earned 0 points.<br><br>The correct answers are A, B, and C. These all directly address risk reduction steps highlighted or implied in the scenario.<br><br><em>D is incorrect—serology alone would not solve a contamination problem; E is not a logical or safe quality practice.</em>';
         }
         
+        // Update thermometer score
+        if (score > 0) {
+            addScorePoints(score);
+        }
+        
         // Award points via SCORM
         if (window.scormAPI && window.scormAPI.isScormAvailable() && score > 0) {
             const currentScore = parseFloat(window.scormAPI.getValue('cmi.score.raw') || '0');
             const newScore = currentScore + score;
             window.scormAPI.setValue('cmi.score.raw', newScore.toString());
             console.log('Quiz 2: Awarded ' + score + ' points. Total score:', newScore);
+        }
+        
+        updateCourseProgress();
+    };
+
+    // Quiz 3 - Levey-Jennings Multiple Choice Question with two submission attempts
+    let quiz3Attempts = 0;
+    window.checkQuiz3 = function() {
+        const form = document.getElementById('quiz3-form');
+        const selectedAnswers = Array.from(form.querySelectorAll('input[name="quiz3"]:checked')).map(input => input.value);
+        const feedback = document.getElementById('quiz3-feedback');
+        const submitBtn = form.querySelector('.submit-quiz-btn');
+        
+        if (selectedAnswers.length === 0) {
+            feedback.style.display = 'block';
+            feedback.className = 'quiz-feedback warning';
+            feedback.innerHTML = '⚠️ Please select at least one answer before submitting.';
+            return;
+        }
+        
+        const correctAnswers = ['1', '4']; // 1 = trend, 4 = consecutive samples
+        const incorrectAnswers = ['2', '3', '5']; // 2 = single point, 3 = two months, 5 = different brand
+        const maxScore = 30; // 2 correct answers × 15 points each
+        
+        // Calculate score
+        let score = 0;
+        let correctSelected = 0;
+        let incorrectSelected = 0;
+        let totalCorrectAnswered = 0;
+        
+        selectedAnswers.forEach(answer => {
+            if (correctAnswers.includes(answer)) {
+                correctSelected++;
+                totalCorrectAnswered++;
+            } else if (incorrectAnswers.includes(answer)) {
+                incorrectSelected++;
+            }
+        });
+        
+        // Scoring: +15 points per correct answer, -10 points per incorrect answer
+        score = (correctSelected * 15) - (incorrectSelected * 10);
+        score = Math.max(0, score);
+        
+        quiz3Attempts++;
+        
+        // Check if perfect score on first attempt
+        const isPerfect = score === maxScore;
+        
+        // First attempt
+        if (quiz3Attempts === 1) {
+            feedback.style.display = 'block';
+            
+            // If perfect score, show full explanation immediately
+            if (isPerfect) {
+                feedback.className = 'quiz-feedback correct';
+                feedback.innerHTML = '✅ <strong>Perfect!</strong> You earned ' + score + ' points from the maximum of ' + maxScore + ' points.<br><br>' +
+                    '<strong>Correct Answers:</strong><br>' +
+                    '1. A trend of declining quality in sequential order. (+15 points) - Run nr 39 has a Ct value of 29.47. The subsequent controls show a declining trend towards run 44 with Ct value 32.56.<br><br>' +
+                    '4. Consecutive samples deviating too much from the mean. (+15 points) - Four or more consecutive points exceeding +1 standard deviation can signal that something in the control batch has shifted.<br><br>' +
+                    '<strong>Incorrect Answers:</strong><br>' +
+                    '2. A single data point fell slightly outside the ±2SD range. (-10 points) - The last controls were within the 2SD range. Also, one point at 2SD does not trigger replacement.<br><br>' +
+                    '3. The control has been used for over two months. (-10 points) - Control samples should be aliquoted for one-time use and stored in the freezer, where they stay stable for a prolonged period.<br><br>' +
+                    '5. The laboratory decided to switch to a different brand of positive control. (-10 points) - This is an administrative decision unrelated to the plot observations.';
+                
+                // Disable all inputs after first submission (perfect score)
+                const inputs = form.querySelectorAll('input[type="checkbox"]');
+                inputs.forEach(input => input.disabled = true);
+                
+                // Disable submit button
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitted';
+                
+                courseProgress.quizzesCompleted.quiz3 = true;
+            } else {
+                // Less than perfect score - show score and allow retry
+                feedback.className = 'quiz-feedback warning';
+                feedback.innerHTML = '📊 <strong>First Attempt Score:</strong> ' + score + ' points from the maximum of ' + maxScore + ' points.<br><br><em>You can try again one more time.</em>';
+                
+                // Show "Try again?" button
+                submitBtn.textContent = 'Try Again';
+                
+                // Allow second attempt - do not disable inputs
+                const inputs = form.querySelectorAll('input[type="checkbox"]');
+                inputs.forEach(input => input.disabled = false);
+            }
+        } 
+        // Second attempt: show full feedback with explanation
+        else if (quiz3Attempts === 2) {
+            feedback.style.display = 'block';
+            
+            // Disable all inputs after second submission
+            const inputs = form.querySelectorAll('input[type="checkbox"]');
+            inputs.forEach(input => input.disabled = true);
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitted';
+            
+            // Determine if answer is perfect
+            const isPerfectNow = correctSelected === 2 && incorrectSelected === 0;
+            
+            if (isPerfectNow) {
+                feedback.className = 'quiz-feedback correct';
+                feedback.innerHTML = '✅ <strong>Perfect!</strong> You earned ' + score + ' points from the maximum of ' + maxScore + ' points.<br><br>' +
+                    '<strong>Correct Answers:</strong><br>' +
+                    '1. A trend of declining quality in sequential order. (+15 points) - Run nr 39 has a Ct value of 29.47. The subsequent controls show a declining trend towards run 44 with Ct value 32.56.<br><br>' +
+                    '4. Consecutive samples deviating too much from the mean. (+15 points) - Four or more consecutive points exceeding +1 standard deviation can signal that something in the control batch has shifted.<br><br>' +
+                    '<strong>Incorrect Answers:</strong><br>' +
+                    '2. A single data point fell slightly outside the ±2SD range. (-10 points) - The last controls were within the 2SD range. Also, one point at 2SD does not trigger replacement.<br><br>' +
+                    '3. The control has been used for over two months. (-10 points) - Control samples should be aliquoted for one-time use and stored in the freezer, where they stay stable for a prolonged period.<br><br>' +
+                    '5. The laboratory decided to switch to a different brand of positive control. (-10 points) - This is an administrative decision unrelated to the plot observations.';
+                
+                courseProgress.quizzesCompleted.quiz3 = true;
+            } else if (score > 0) {
+                feedback.className = 'quiz-feedback correct';
+                feedback.innerHTML = '✅ <strong>Partially Correct.</strong> You earned ' + score + ' points from the maximum of ' + maxScore + ' points.<br><br>' +
+                    '<strong>Correct Answers:</strong><br>' +
+                    '1. A trend of declining quality in sequential order. (+15 points) - Run nr 39 has a Ct value of 29.47. The subsequent controls show a declining trend towards run 44 with Ct value 32.56.<br><br>' +
+                    '4. Consecutive samples deviating too much from the mean. (+15 points) - Four or more consecutive points exceeding +1 standard deviation can signal that something in the control batch has shifted.<br><br>' +
+                    '<strong>Incorrect Answers:</strong><br>' +
+                    '2. A single data point fell slightly outside the ±2SD range. (-10 points) - The last controls were within the 2SD range. Also, one point at 2SD does not trigger replacement.<br><br>' +
+                    '3. The control has been used for over two months. (-10 points) - Control samples should be aliquoted for one-time use and stored in the freezer, where they stay stable for a prolonged period.<br><br>' +
+                    '5. The laboratory decided to switch to a different brand of positive control. (-10 points) - This is an administrative decision unrelated to the plot observations.';
+                
+                courseProgress.quizzesCompleted.quiz3 = true;
+            } else {
+                feedback.className = 'quiz-feedback incorrect';
+                feedback.innerHTML = '❌ <strong>Incorrect.</strong> You earned ' + score + ' points from the maximum of ' + maxScore + ' points.<br><br>' +
+                    '<strong>Correct Answers:</strong><br>' +
+                    '1. A trend of declining quality in sequential order. (+15 points) - Run nr 39 has a Ct value of 29.47. The subsequent controls show a declining trend towards run 44 with Ct value 32.56.<br><br>' +
+                    '4. Consecutive samples deviating too much from the mean. (+15 points) - Four or more consecutive points exceeding +1 standard deviation can signal that something in the control batch has shifted.<br><br>' +
+                    '<strong>Incorrect Answers:</strong><br>' +
+                    '2. A single data point fell slightly outside the ±2SD range. (-10 points) - The last controls were within the 2SD range. Also, one point at 2SD does not trigger replacement.<br><br>' +
+                    '3. The control has been used for over two months. (-10 points) - Control samples should be aliquoted for one-time use and stored in the freezer, where they stay stable for a prolonged period.<br><br>' +
+                    '5. The laboratory decided to switch to a different brand of positive control. (-10 points) - This is an administrative decision unrelated to the plot observations.';
+            }
+            
+            // Update thermometer score
+            if (score > 0) {
+                addScorePoints(score);
+            }
+            
+            // Award points via SCORM
+            if (window.scormAPI && window.scormAPI.isScormAvailable() && score > 0) {
+                const currentScore = parseFloat(window.scormAPI.getValue('cmi.score.raw') || '0');
+                const newScore = currentScore + score;
+                window.scormAPI.setValue('cmi.score.raw', newScore.toString());
+                console.log('Quiz 3: Awarded ' + score + ' points. Total score:', newScore);
+            }
         }
         
         updateCourseProgress();
@@ -220,6 +457,27 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeQuizzes();
     initializeInteractiveElements();
     updateCourseProgress();
+    
+    // Initialize Reset Score Button
+    const resetScoreBtn = document.getElementById('resetScoreBtn');
+    if (resetScoreBtn) {
+        resetScoreBtn.addEventListener('click', resetScore);
+    }
+    
+    // Initialize Continue Buttons
+    const continueButtons = document.querySelectorAll('.continue-btn');
+    continueButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const nextChapter = this.dataset.next;
+            if (nextChapter) {
+                // Find and click the corresponding chapter menu item
+                const chapterItem = document.querySelector(`[data-tab="${nextChapter}"]`);
+                if (chapterItem) {
+                    chapterItem.click();
+                }
+            }
+        });
+    });
     
     // Initialize Levy-Jennings Chart
     initializeLevyJenningsChart();

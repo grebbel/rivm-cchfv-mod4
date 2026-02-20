@@ -257,164 +257,6 @@
         .reset-score-btn:active {
             transform: scale(0.98);
         }
-
-        /* Image Slider Styles */
-        .interactive-content {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin: 20px auto;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .slide {
-            display: none;
-            width: 100%;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        .slide.active {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-            padding: 30px;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .slide-image {
-            width: 45%;
-            max-width: 350px;
-            height: auto;
-            border-radius: 8px;
-            object-fit: contain;
-        }
-
-        .slide-text {
-            width: 55%;
-            flex-shrink: 0;
-        }
-
-        .slide-text h4 {
-            margin-top: 0;
-            margin-bottom: 15px;
-            color: var(--rh-dark-blue);
-            font-size: 1.3em;
-            font-weight: 600;
-        }
-
-        .slide-text p {
-            margin: 0;
-            color: #333;
-            line-height: 1.6;
-            font-size: 0.95em;
-        }
-
-        .navigation-controls {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 20px 30px;
-            background-color: #f0f0f0;
-            border-top: 1px solid #ddd;
-        }
-
-        .nav-btn {
-            background-color: var(--rh-dark-blue);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.95em;
-            transition: background-color 0.3s ease;
-        }
-
-        .nav-btn:hover {
-            background-color: var(--rh-orange);
-        }
-
-        .nav-btn:active {
-            transform: scale(0.98);
-        }
-
-        .progress-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex: 1;
-        }
-
-        .progress-bar {
-            flex: 1;
-            height: 8px;
-            background-color: #ddd;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--rh-orange), var(--rh-dark-blue));
-            border-radius: 4px;
-            transition: width 0.3s ease;
-            width: 20%;
-        }
-
-        .step-counter {
-            margin: 0;
-            font-weight: 600;
-            color: var(--rh-dark-blue);
-            font-size: 0.95em;
-            white-space: nowrap;
-        }
-
-        @media (max-width: 768px) {
-            .slide.active {
-                flex-direction: column;
-                padding: 20px;
-                gap: 20px;
-            }
-
-            .slide-image {
-                width: 100%;
-                max-width: 100%;
-            }
-
-            .slide-text {
-                width: 100%;
-            }
-
-            .slide-text h4 {
-                font-size: 1.1em;
-            }
-
-            .slide-text p {
-                font-size: 0.9em;
-            }
-
-            .navigation-controls {
-                flex-direction: column;
-                gap: 15px;
-                padding: 15px 20px;
-            }
-
-            .progress-container {
-                width: 100%;
-            }
-        }
     </style>
 </head>
 <body>
@@ -525,10 +367,6 @@
                     </ul>
                     
                     <p>Good luck and enjoy this chapter.</p>
-
-                    <div class="continue-section">
-                        <button class="continue-btn" data-next="chapter1">CONTINUE</button>
-                    </div>
                 </section>
 
                 <!-- Chapter 1: Quality Failures -->
@@ -694,42 +532,6 @@
                     <div class="intermezzo">
                         <h3>INTERMEZZO: UNG-Digestion PCR</h3>
                         <p>"Uracil-DNA glycosylase (UDG) or UNG-digestion PCR." In this approach, deoxyuridine triphosphate (dUTP) is incorporated into PCR reactions in place of deoxythymidine triphosphate (dTTP), creating amplicons that contain uracil instead of thymine. Before performing the PCR, the reaction mixture is treated with uracil-N-glycosylase (UNG or UDG), which digests or removes any uracil-containing DNA. This step eliminates carryover contamination from previous PCRs, as only newly synthesized DNA (without uracil) will be amplified in the reaction. This technique is often referred to as "UNG-digestion" or "carryover prevention PCR" or simply "dUTP/UNG system." It is used for digesting potential previous reaction products to prevent contamination, making it highly valuable for sensitive applications.</p>
-                    
-                    <p>Click the "Next" and "Previous" buttons to navigate through the UNG-Digestion PCR process.</p>
-                    
-                    <div class="interactive-content uracil-slider">
-                        <div class="slide active" id="uracil-slide-1">
-                            <img src="images/1_Uracil.png" alt="Step 1: Uracil Incorporation" class="slide-image">
-                        </div>
-                        
-                        <div class="slide" id="uracil-slide-2">
-                            <img src="images/2_Uracil.png" alt="Step 2: UNG Treatment" class="slide-image">
-                        </div>
-                        
-                        <div class="slide" id="uracil-slide-3">
-                            <img src="images/3_Uracil.png" alt="Step 3: Carryover Elimination" class="slide-image">
-                        </div>
-                        
-                        <div class="slide" id="uracil-slide-4">
-                            <img src="images/4_Uracil.png" alt="Step 4: PCR Amplification" class="slide-image">
-                        </div>
-                        
-                        <div class="slide" id="uracil-slide-5">
-                            <img src="images/5_Uracil.png" alt="Step 5: Clean Results" class="slide-image">
-                        </div>
-                    </div>
-                    
-                    <div class="navigation-controls">
-                        <button class="nav-btn" id="uracilPrevBtn">Previous</button>
-                        <div class="progress-container">
-                            <p class="uracil-step-label" id="uracilStepLabel">Step 1: Uracil Incorporation</p>
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="uracilProgressFill"></div>
-                            </div>
-                            <p class="step-counter"><span id="uracilStepCounter">1</span> / 5</p>
-                        </div>
-                        <button class="nav-btn" id="uracilNextBtn">Next</button>
-                    </div>
                     </div>
                     
                     <p><strong>Quantitative control:</strong> Quantitative procedures must include <strong>two control materials of different concentrations</strong> (calibrators) in each run.</p>
@@ -848,10 +650,6 @@
                         
                         <div id="quiz3-feedback" class="quiz-feedback" style="display: none;"></div>
                     </div>
-
-                    <div class="continue-section">
-                        <button class="continue-btn" data-next="chapter5">CONTINUE</button>
-                    </div>
                 </section>
 
                 <!-- Chapter 5: Proficiency Testing -->
@@ -889,10 +687,6 @@
                         <li>Ask other laboratories, reference labs, together with their results. Check which platform and extraction method they are using.</li>
                         <li>Use positive samples from a proficiency testing panel.</li>
                     </ul>
-
-                    <div class="continue-section">
-                        <button class="continue-btn" data-next="chapter6">CONTINUE</button>
-                    </div>
                 </section>
 
                 <!-- Chapter 6: Post-Analytical Phase -->
@@ -903,10 +697,12 @@
                     
                     <p>Results must be reported accurate, clear, and provide the necessary context for the ordering physician.</p>
                     
+                    <h4>Qualitative Reports</h4>
                     <p><strong>Qualitative Reports:</strong> These provide a simple "Positive/Detected" or "Negative/Not Detected" answer. A Ct-value often doesn't mean much to a physician.</p>
                     
                     <p>To help physicians interpret a negative result, the report must always include the test's <strong>Limit of Detection (LOD)</strong>—the smallest amount of the target the test can reliably detect.</p>
                     
+                    <h4>Quantitative Reports</h4>
                     <p><strong>Quantitative Reports:</strong> These provide a numerical value, such as a viral load (e.g., 50,000 copies/mL). These reports must state the test's <strong>analytic measuring range</strong>. A result can be reported as:</p>
                     
                     <ul>
@@ -920,10 +716,6 @@
                     </div>
                     
                     <p>The laboratory can also recommend additional serological testing if two weeks have passed since the onset of symptoms.</p>
-
-                    <div class="continue-section">
-                        <button class="continue-btn" data-next="summary">CONTINUE</button>
-                    </div>
                 </section>
 
                 <!-- Summary -->
@@ -940,77 +732,11 @@
         <!-- Footer -->
         <footer class="footer">
             <p>&copy; 2025 RIVM - National Institute for Public Health and the Environment</p>
+            <p>Module 4: Quality Control and Quality Assurance in CCHF Molecular Diagnostics</p>
         </footer>
     </div>
 
     <!-- Load main JavaScript -->
     <script src="script.js"></script>
-    
-    <!-- UNG-Digestion PCR Slider JavaScript -->
-    <script>
-        let currentUracilSlide = 1;
-        const totalUracilSlides = 5;
-        const uracilNextBtn = document.getElementById('uracilNextBtn');
-        const uracilPrevBtn = document.getElementById('uracilPrevBtn');
-        const uracilStepLabel = document.getElementById('uracilStepLabel');
-        const uracilStepLabels = [
-            'Step 1: Uracil Incorporation',
-            'Step 2: UNG Treatment',
-            'Step 3: Carryover Elimination',
-            'Step 4: PCR Amplification',
-            'Step 5: Clean Results'
-        ];
-
-        function showUracilSlide(slideNumber) {
-            // Hide all slides
-            const slides = document.querySelectorAll('.interactive-content .slide');
-            slides.forEach(slide => slide.classList.remove('active'));
-            
-            // Show current slide
-            const currentSlide = document.getElementById('uracil-slide-' + slideNumber);
-            if (currentSlide) {
-                currentSlide.classList.add('active');
-            }
-            
-            // Update progress
-            const progressFill = document.getElementById('uracilProgressFill');
-            const stepCounter = document.getElementById('uracilStepCounter');
-            if (progressFill) {
-                progressFill.style.width = (slideNumber / totalUracilSlides * 100) + '%';
-            }
-            if (stepCounter) {
-                stepCounter.textContent = slideNumber;
-            }
-            if (uracilStepLabel) {
-                uracilStepLabel.textContent = uracilStepLabels[slideNumber - 1];
-            }
-
-            if (uracilPrevBtn) {
-                uracilPrevBtn.disabled = slideNumber === 1;
-            }
-            if (uracilNextBtn) {
-                uracilNextBtn.disabled = slideNumber === totalUracilSlides;
-            }
-        }
-
-        // Next button
-        if (uracilNextBtn) {
-            uracilNextBtn.addEventListener('click', () => {
-                currentUracilSlide = currentUracilSlide < totalUracilSlides ? currentUracilSlide + 1 : totalUracilSlides;
-                showUracilSlide(currentUracilSlide);
-            });
-        }
-
-        // Previous button
-        if (uracilPrevBtn) {
-            uracilPrevBtn.addEventListener('click', () => {
-                currentUracilSlide = currentUracilSlide > 1 ? currentUracilSlide - 1 : 1;
-                showUracilSlide(currentUracilSlide);
-            });
-        }
-
-        // Initialize first slide
-        showUracilSlide(currentUracilSlide);
-    </script>
 </body>
 </html>

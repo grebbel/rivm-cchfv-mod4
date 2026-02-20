@@ -315,11 +315,54 @@
     - line 529 <h4>Quantitative Control</h4>
   - **Completed:** Removed all 5 control headers (Internal, Positive, Negative, Blank, Quantitative) from Chapter 3 while preserving the content paragraphs
 
+- [X] **CONT-022** Chapter 4 add image slider
+  - Template: 13_MODULE_3/CCHF_PCR_course/index.html 
+  - Template: 13_MODULE_3/CCHF_PCR_course/script.js
+  - Template: Module 3: Principles of PCR, Course chapter PCR principle, The PCR process
+  - In module 4, chapter 3: Assays controls, INTERMEZZO: UNG-Digestion PCR. 
+  - add Image slider, with the same template as used in 13_MODULE_3/CCHF_PCR_course/
+  - Use the following 5 images: images/1_Uracil.png, 2_Uracil.png, 3_Uracil.png, 4_Uracil.png. 5_Uracil.png
+  - Make sure that the size of the images in de slides are adapted to the same proportions.
+  - **Completed:** Added interactive image slider with 5 slides showing the UNG-Digestion PCR process (Uracil Incorporation, UNG Treatment, Carryover Elimination, PCR Amplification, Clean Results). Included Previous/Next navigation buttons, progress bar, and step counter. JavaScript functionality embedded in HTML for slide navigation and progress tracking. 
 
+- [X] **CONT-023** Chapter 4 add image slider Tweak
+  - Place the text 'Step 1: Uracil Incorporation' above the image.
+  - Remove the explainig text below :'Deoxyuridine triphosphate (dUTP) is incorporated into PCR reactions in place of deoxythymidine triphosphate (dTTP). This creates amplicons that contain uracil instead of thymine, marking them as newly synthesized DNA for this reaction.' 
+  - Make the image larger. 
+  - Do the same for the other slides. 
+  - **Completed:** Moved all slide titles above their images, removed the descriptive paragraphs, and increased slide image size.
+
+- [X] **CONT-024** Chapter 4 add image slider more Tweaks
+- Make the last 'Next' button grey / non-clickable 
+- Make the <div class="progress-fill" id="uracilProgressFill"></div> one solid colour. 
+- Enlarge the images so they fit the white space with less margins around them. 
+  - **Completed:** Disabled the Next button on the final slide, forced a solid progress-fill color, and reduced slider padding with larger max image size.
+
+- [X] **CONT-025** Chapter 4 Trying to make the images fill the white container
+  - Put the Step 1, 2, 3, 4 and 5 texts the the next/previous button containers. 
+  - The try to make the images in de slider larger. 
+  - **Completed:** Moved step titles into the navigation area, removed slide titles, and increased the uracil slider image area by reducing padding and raising the slider height.
+
+- [X] **CONT-026** Adding Continue buttons
+- Chapters 1, 2 and 3 have a continue button at the end. Place continue buttons also to Introductiom chapter 4, 5 and 6. 
+  - **Completed:** Added continue buttons to Introduction (to Chapter 1), Chapter 4 (to Chapter 5), Chapter 5 (to Chapter 6), and Chapter 6 (to Summary).
+
+- [X] **CONT-027** Footer text
+- Each chapter has the footer text © 2025 RIVM - National Institute for Public Health and the Environment Module 4: Quality Control and Quality Assurance in CCHF Molecular Diagnostics. 
+- Remove the sentence 'Module 4: Quality Control and Quality Assurance in CCHF Molecular Diagnostics. ' 
+- Centralize the sentence '© 2025 RIVM - National Institute for Public Health and the Environment' 
+  - **Completed:** Removed the module-specific footer line and centered the remaining copyright line.
 
 - [ ] **CONT-030** Summary
   - Dependencies: Mod_4_Quality controlv3_1.md 
-  - Add conten
+  - Add content for Summary
+
+
+### Make modules uniform
+
+- [ ] **UNIF-001** Make scoring thermometer modules 1 and 3 the same as in module 4
+- [ ] **UNIF-002** Make overview of scoring and recalc
+- [ ] **UNIF-003** Write '© 2025 RIVM - National Institute for Public Health and the Environment' underneath each chapter in each module. Add een extra tab from the left. 
 
 
 

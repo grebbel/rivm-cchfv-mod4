@@ -40,6 +40,19 @@ body {
 	flex-direction: column;
 }
 
+.footer {
+	text-align: center;
+	padding: 20px 30px;
+	background-color: var(--rh-light-gray);
+	border-top: 2px solid #ddd;
+	color: var(--rh-dark-blue);
+	font-size: 0.9rem;
+}
+
+.footer p {
+	margin: 0;
+}
+
 /* Header Section */
 .header {
 	background: linear-gradient(135deg, var(--rh-green) 0%, var(--rh-dark-blue) 100%);
@@ -227,8 +240,9 @@ body {
 	background-color: #fff3e0;
 	border-left: 4px solid var(--rh-orange);
 	padding: 20px;
-	margin: 30px 0;
+	margin: 30px auto;
 	border-radius: 8px;
+	max-width: 900px;
 }
 
 .intermezzo h3 {
@@ -543,14 +557,21 @@ body {
 }
 
 .slide-image {
-	max-width: 90%;
-	max-height: 350px;
-	width: auto;
+	max-width: 1800px;
+	max-height: 960px;
+	width: 100%;
 	height: auto;
 	object-fit: contain;
 	border-radius: 15px;
 	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 	border: 3px solid var(--rh-light-blue);
+}
+
+.slide-title {
+	font-size: 1.3rem;
+	color: var(--rh-dark-blue);
+	margin-bottom: 12px;
+	font-weight: 600;
 }
 
 .slide-text {
@@ -598,11 +619,25 @@ body {
 	margin-bottom: 8px;
 }
 
+.uracil-step-label {
+	font-size: 0.95rem;
+	font-weight: 600;
+	color: var(--rh-dark-blue);
+	margin-bottom: 8px;
+	text-align: center;
+}
+
 .progress-fill {
 	height: 100%;
 	background-color: var(--rh-green);
+	background-image: none;
 	transition: width 0.3s ease;
 	border-radius: 4px;
+}
+
+#uracilProgressFill {
+	background-color: var(--rh-green);
+	background-image: none;
 }
 
 #stepCounter {
@@ -634,6 +669,28 @@ body {
 	cursor: not-allowed;
 	box-shadow: none;
 	transform: none;
+}
+
+.uracil-slider {
+	padding: 0;
+	min-height: 600px;
+	margin-left: -30px;
+	margin-right: -30px;
+	width: calc(100% + 60px);
+}
+
+.uracil-slider .slide {
+	padding: 0;
+	align-items: stretch;
+	justify-content: stretch;
+}
+
+.uracil-slider .slide-image {
+	max-width: none;
+	max-height: none;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
 /* Formula Section */

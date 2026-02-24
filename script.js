@@ -166,7 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Quiz 1 - Single Choice Question
-    window.checkQuiz1 = function() {
+    window.checkQuiz1 = function(event) {
+        if (event) event.preventDefault();
         const form = document.getElementById('quiz1-form');
         const selectedAnswer = form.querySelector('input[name="quiz1"]:checked');
         const feedback = document.getElementById('quiz1-feedback');
@@ -218,7 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Quiz 2 - Multiple Choice Question with scoring
-    window.checkQuiz2 = function() {
+    window.checkQuiz2 = function(event) {
+        if (event) event.preventDefault();
         const form = document.getElementById('quiz2-form');
         const selectedAnswers = Array.from(form.querySelectorAll('input[name="quiz2"]:checked')).map(input => input.value);
         const feedback = document.getElementById('quiz2-feedback');
@@ -300,7 +302,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Quiz 3 - Levey-Jennings Multiple Choice Question with two submission attempts
     let quiz3Attempts = 0;
-    window.checkQuiz3 = function() {
+    window.checkQuiz3 = function(event) {
+        if (event) event.preventDefault();
         const form = document.getElementById('quiz3-form');
         const selectedAnswers = Array.from(form.querySelectorAll('input[name="quiz3"]:checked')).map(input => input.value);
         const feedback = document.getElementById('quiz3-feedback');

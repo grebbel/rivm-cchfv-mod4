@@ -432,27 +432,28 @@
         <div class="main-layout">
             <!-- Sidebar Navigation -->
             <aside class="sidebar">
+                <div class="sidebar-header">Module chapters</div>
                 <nav class="sidebar-nav">
                     <div class="chapter-item active" data-tab="introduction">
                         <span class="chapter-title">Introduction</span>
                     </div>
                     <div class="chapter-item" data-tab="chapter1">
-                        <span class="chapter-title">Chapter 1: Quality Failures</span>
+                        <span class="chapter-title">Quality failures</span>
                     </div>
                     <div class="chapter-item" data-tab="chapter2">
-                        <span class="chapter-title">Chapter 2: Pre-Analytical Phase</span>
+                        <span class="chapter-title">Pre-analytical phase</span>
                     </div>
                     <div class="chapter-item" data-tab="chapter3">
-                        <span class="chapter-title">Chapter 3: Assay Controls</span>
+                        <span class="chapter-title">Assay controls</span>
                     </div>
                     <div class="chapter-item" data-tab="chapter4">
-                        <span class="chapter-title">Chapter 4: Trend Analysis</span>
+                        <span class="chapter-title">Trend analysis</span>
                     </div>
                     <div class="chapter-item" data-tab="chapter5">
-                        <span class="chapter-title">Chapter 5: Proficiency Testing</span>
+                        <span class="chapter-title">Proficiency testing</span>
                     </div>
                     <div class="chapter-item" data-tab="chapter6">
-                        <span class="chapter-title">Chapter 6: Post-Analytical Phase</span>
+                        <span class="chapter-title">Post-analytical phase</span>
                     </div>
                     <div class="chapter-item" data-tab="summary">
                         <span class="chapter-title">Summary</span>
@@ -584,7 +585,7 @@
                                     <span>E) Hemolysis of the patient's blood sample led to non-specific PCR amplification</span>
                                 </label>
                             </div>
-                            <button type="button" class="submit-quiz-btn" onclick="checkQuiz1()">Submit Answer</button>
+                            <button type="submit" class="submit-btn" onclick="checkQuiz1(event); return false;">Submit Answer</button>
                         </form>
                         <div id="quiz1-feedback" class="quiz-feedback" style="display: none;"></div>
                     </div>
@@ -623,7 +624,7 @@
                                     <span>E) Assign less experienced staff to process only negative controls, not clinical samples.</span>
                                 </label>
                             </div>
-                            <button type="button" class="submit-quiz-btn" onclick="checkQuiz2()">Submit Answer</button>
+                            <button type="submit" class="submit-btn" onclick="checkQuiz2(event); return false;">Submit Answer</button>
                         </form>
                         <div id="quiz2-feedback" class="quiz-feedback" style="display: none;"></div>
                     </div>
@@ -843,7 +844,7 @@
                                     <input type="checkbox" name="quiz3" value="4"> Consecutive samples deviating too much from the mean.
                                 </label>
                             </div>
-                            <button type="button" class="submit-quiz-btn" onclick="checkQuiz3()">Submit Answer</button>
+                            <button type="submit" class="submit-btn" onclick="checkQuiz3(event); return false;">Submit Answer</button>
                         </form>
                         
                         <div id="quiz3-feedback" class="quiz-feedback" style="display: none;"></div>
@@ -940,6 +941,7 @@
         <!-- Footer -->
         <footer class="footer">
             <p>&copy; 2025 RIVM - National Institute for Public Health and the Environment</p>
+            <p>Medical content adapted from WHO guidelines (Public Domain). Scientific data from peer-reviewed research (CC-BY licensed)</p>
         </footer>
     </div>
 
